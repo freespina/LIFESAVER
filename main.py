@@ -13,6 +13,7 @@ items=[{'title':'PS5 PRO 750$$','SELLER':'seller:misho gatenashvili','img':'http
        {'title':'Xbox 350$$', 'SELLER': 'seller:sandro nozaze','img': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQaVwNRDt1eMvC7kfWJZ0cLHUlaILdNKPP3fQ&s'}
        ]
 
+cards = []
 
 @app.route('/')
 def register():
@@ -20,7 +21,7 @@ def register():
 
 @app.route('/index')
 def index():
-    return render_template('index.html', items=items)
+    return render_template('index.html', items=items, cards=cards)
 
 
 @app.route('/add_question', methods=['POST'])
@@ -92,6 +93,18 @@ def admin_contacts():
 
     print(questions)
     return render_template('admin_contacts.html', questions = questions)
+
+@app.route('/admin_items')
+def admin_items():
+
+    if request.method == 'POST':
+        name = request.form['name']
+        link = request.form['link']
+        description = request.form['description']
+        cards.append({'name': name, 'link': link, 'description': description})
+        return redirect('/index')
+    return render_template('admin_items.html', cards=cards)
+
 
 
 if __name__ == '__main__':
